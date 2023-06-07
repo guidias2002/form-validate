@@ -27,12 +27,19 @@ body,
     flex-direction: column;
     margin: 10px 0;
     width: 400px;
+    position: relative;
 }
 
 .msg-erro {
     color: red;
     display: absolute;
     font-size: 14px;
+    position: absolute;
+    top: 70px;
+}
+
+.campo-button {
+    margin-top: 20px;
 }
 
 input {
@@ -57,4 +64,12 @@ button {
 label {
     color: #fff;
     padding: 5px 0;
+}
+
+.icon {
+    color: #fff;
+    cursor: pointer;
+    position: absolute;
+    top: 40px;
+    right: 10px;
 }

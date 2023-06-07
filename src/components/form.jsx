@@ -1,23 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 import validator from 'validator'
-import isEmail from 'validator/lib/isEmail';
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 
 const FormValidate = () => {
+
+    const [ mostrarSenha, setMostrarSenha] = useState(false);
+    const [ mostrarConfirmacaoSenha, setMostrarConfirmacaoSenha] = useState(false);
 
     const { 
         register, 
         handleSubmit, 
         watch,
+        setValue,
         formState: { errors } 
     } = useForm();
 
     const onSubmit = (e) => {
-        console.log(e)
+        alert('Dados enviados com sucesso')
+        setValue('nome', '')
+        setValue('email', '')
+        setValue('senha', '')
+        setValue('confirmarSenha', '')
     }
 
     const watchSenha = watch('senha');
+
+    const trocarSenha = () => {
+        setMostrarSenha(!mostrarSenha)
+    }
+
+    const trocarConfirmacaoSenha = () => {
+        setMostrarConfirmacaoSenha(!mostrarConfirmacaoSenha)
+    }
 
     return (
         <form className='container' onSubmit={handleSubmit(onSubmit)}>
@@ -48,22 +64,26 @@ const FormValidate = () => {
                 <label>Senha</label>
                 <input 
                 className={errors?.nome && 'input-erro'}
-                type="password" 
+                type={mostrarSenha ? 'text' : 'password'} 
                 placeholder='Digite sua senha' 
                 {...register('senha', { 
                     required: true, 
                     minLength: 8, 
                 })}
                 />
+                {mostrarSenha === true
+                ? <FaEyeSlash className='icon' onClick={trocarSenha}/>
+                : <FaEye className='icon' onClick={trocarSenha}/>
+                }
                 {errors?.senha?.type === 'required' && (<p className='msg-erro'>Este campo é obrigatório</p>)}
-                {errors?.senha?.type === 'minLength' && (<p className='msg-erro'>A senha precisa ter no mínimo 8 caractéres.</p>)}
+                {errors?.senha?.type === 'minLength' && (<p className='msg-erro'>A senha deve ter no mínimo 8 caractéres</p>)}
             </div>
 
             <div className='campos'>
                 <label>Confirmar senha</label>
                 <input 
                 className={errors?.nome && 'input-erro'}
-                type="password" 
+                type={mostrarConfirmacaoSenha ? 'text' : 'password'} 
                 placeholder='Confirme sua senha' 
                 {...register('confirmarSenha', { 
                     required: true,
@@ -71,12 +91,18 @@ const FormValidate = () => {
                     validate: (value) => value === watchSenha,
                 })}
                 />
+                {mostrarConfirmacaoSenha === true
+                ? <FaEyeSlash className='icon' onClick={trocarConfirmacaoSenha}/>
+                : <FaEye className='icon' onClick={trocarConfirmacaoSenha}/>
+                }
                 {errors?.confirmarSenha?.type === 'required' && (<p className='msg-erro'>Este campo é obrigatório</p>)}
                 {errors?.confirmarSenha?.type === 'validate' && (<p className='msg-erro'>A senha deve ser igual</p>)}
-                {errors?.confirmarSenha?.type === 'minLength' && (<p className='msg-erro'>A senha precisa ter no mínimo 8 caractéres.</p>)}
+                {errors?.confirmarSenha?.type === 'minLength' && (<p className='msg-erro'>A senha deve ter no mínimo 8 caractéres</p>)}
             </div>
 
-            <button type='submit'>Criar conta</button>
+            <div className='campo-button'>
+                <button type='submit'>Criar conta</button>
+            </div>
         </form>
     )
 }
